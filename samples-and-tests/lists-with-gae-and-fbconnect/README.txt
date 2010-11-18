@@ -1,0 +1,1 @@
+This app is also available online at http://play-lists-fbconnect.appspot.com
