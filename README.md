@@ -75,4 +75,4 @@ You are welcome to style the button however you like, but the fbconnect module p
 
 ![after](http://play-lists-fbconnect.appspot.com/assets/images/after.jpg)
 
-These styles are in a file called `play-fbconnect.min.css` and they can be found in the module's `lib` directory. I should note that the styles will not work if you specify a custom `cssClass` when using the `fbconnect.button` tag.
+These styles are in a file called `play-fbconnect.min.css` and they can be found in the module's `lib` directory. I should note that the styles will not work if you specify a custom `cssClass` when using the `fbconnect.button` tag. The button graphics are courtesy of [Rogie](http://www.komodomedia.com/blog/2009/05/sign-in-with-twitter-and-facebook-buttons/).
