@@ -42,7 +42,7 @@ All of the properties are required except for `fbconnect.landUrl`, which will de
 
 ### Define your OAuth callback
 
-The first step is to implement a method called `facebookOAuthCallback` on the class that you specified as `fbconnect.model`. After a user has authenticated using Facebook, the module will call this method with a JsonObject that contains data about the user. This is your opportunity to add the user to your database, add the user to your session, or do anything else you want to do with the authentic data Facebook provides. [See this table](http://developers.facebook.com/docs/reference/api/user) for all the properties that Facebook makes available on the JsonObject.
+Your `fbconnect.model` class needs to implement a method called `facebookOAuthCallback`. After a user has authenticated using Facebook, the module will call this method with a JsonObject that contains data about the user. This is your opportunity to add the user to your database, add the user to your session, or do anything else you want to do with the authentic data Facebook provides. [See this table](http://developers.facebook.com/docs/reference/api/user) for all the properties that Facebook makes available on the JsonObject.
 
     public static void facebookOAuthCallback(JsonObject data){
         String email = data.get("email").getAsString();
