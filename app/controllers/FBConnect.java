@@ -47,7 +47,7 @@ public class FBConnect extends Controller {
                     paramTypes[0] = JsonObject.class;
                     Method method = model.getMethod("facebookOAuthCallback", paramTypes);
                     if(Modifier.isStatic(method.getModifiers())){
-                        String uri = "https://graph.facebook.com/me?access_token="+accessToken;
+                        String uri = "https://graph.facebook.com/me?access_token="+WS.encode(accessToken);
                         JsonObject jsonData = WS.url(uri).get().getJson().getAsJsonObject();
                         method.invoke(null, jsonData);
                     }else{

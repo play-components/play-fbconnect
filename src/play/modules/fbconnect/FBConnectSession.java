@@ -1,7 +1,10 @@
 package play.modules.fbconnect;
 
+import java.net.URLEncoder;
+
 import play.Play;
 import play.exceptions.UnexpectedException;
+import play.libs.WS;
 import play.mvc.Http;
 import play.mvc.Router;
 
@@ -36,8 +39,8 @@ public class FBConnectSession {
     
     public String getAuthUrl(String authCode){
         return "https://graph.facebook.com/oauth/access_token?client_id=" +
-        id+"&redirect_uri=" +
-        Router.getFullUrl("FBConnect.callback") + "&client_secret="+secret+"&code="+authCode;
+        WS.encode(id)+"&redirect_uri=" +
+        WS.encode(Router.getFullUrl("FBConnect.callback")) + "&client_secret="+WS.encode(secret)+"&code="+WS.encode(authCode);
 
     }
     
