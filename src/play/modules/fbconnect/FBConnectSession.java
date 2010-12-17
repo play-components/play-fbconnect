@@ -31,10 +31,14 @@ public class FBConnectSession {
         return landUrl;
     }
     
-    public String getLoginUrl(){
+	public String getLoginUrl() {
+		return getLoginUrl(null);
+	}
+
+    public String getLoginUrl(String scope){
         return "https://graph.facebook.com/oauth/authorize?client_id=" +
         id + "&display=page&redirect_uri=" +
-        Router.getFullUrl("FBConnect.callback") +"&scope=email";
+        Router.getFullUrl("FBConnect.callback") + (scope != null ? "&scope=" + scope : "");
     }
     
     public String getAuthUrl(String authCode){
