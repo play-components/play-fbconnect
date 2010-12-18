@@ -46,7 +46,11 @@ The `fbconnect.button` tag outputs a link that will prompt your users to authent
 
 	#{fbconnect.button label:'Login using your facebook account.' /}
 
-The tag takes two optional parameters. `label` which defaults to *Sign in with Facebook*, and `cssClass` which defaults to *play-fbconnect-button*.
+The tag takes three optional parameters.
+
+	- `label` which defaults to *Sign in with Facebook*
+	- `cssClass` which defaults to *play-fbconnect-button*
+	- `scope` which defaults to *email* (see [the facebook docs](http://developers.facebook.com/docs/authentication/permissions) for more details on scope)
 
 ### Define your OAuth callback
 
