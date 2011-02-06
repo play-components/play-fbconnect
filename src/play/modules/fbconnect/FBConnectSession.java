@@ -37,14 +37,14 @@ public class FBConnectSession {
 
     public String getLoginUrl(String scope){
         return "https://graph.facebook.com/oauth/authorize?client_id=" +
-        id + "&display=page&redirect_uri=" +
-        Router.getFullUrl("FBConnect.callback") + (scope != null ? "&scope=" + scope : "");
+        WS.encode(id) + "&display=page&redirect_uri=" +
+        WS.encode(Router.getFullUrl("FBConnect.callback")) + (scope != null ? "&scope=" + WS.encode(scope) : "");
     }
     
     public String getAuthUrl(String authCode){
         return "https://graph.facebook.com/oauth/access_token?client_id=" +
         WS.encode(id)+"&redirect_uri=" +
-        WS.encode(Router.getFullUrl("FBConnect.callback")) + "&client_secret="+WS.encode(secret)+"&code="+WS.encode(authCode);
+        WS.encode(Router.getFullUrl("FBConnect.callback")) + "&client_secret="+WS.encode(secret)+"&code="+WS.encode(authCode.replace("|", "%7C"));
 
     }
     
