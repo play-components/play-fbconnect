@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import play.Play;
 import play.exceptions.UnexpectedException;
@@ -49,6 +50,7 @@ public class FBConnect extends Controller {
                     if(Modifier.isStatic(method.getModifiers())){
                         String uri = "https://graph.facebook.com/me?access_token="+WS.encode(accessToken);
                         JsonObject jsonData = WS.url(uri).get().getJson().getAsJsonObject();
+                        jsonData.add("accessToken", new JsonPrimitive(accessToken));
                         method.invoke(null, jsonData);
                     }else{
                         throw new UnexpectedException("Module fbconnect expects your facebookOAuthCallback method to be static");
