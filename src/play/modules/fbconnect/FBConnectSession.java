@@ -37,7 +37,11 @@ public class FBConnectSession {
 	}
 
     public String getLoginUrl(String scope){
-        return String.format("https://www.facebook.com/dialog/oauth?client_id=%s&display=%s&redirect_uri=%s&scope=%s", WS.encode(id), WS.encode("page"), WS.encode(Router.getFullUrl("FBConnect.callback")), scope);
+        String url = String.format("https://www.facebook.com/dialog/oauth?client_id=%s&display=%s&redirect_uri=%s", WS.encode(id), WS.encode("page"), WS.encode(Router.getFullUrl("FBConnect.callback")));
+        if(scope != null){
+            url += "&scope="+WS.encode(scope);
+        }
+        return url;
     }
     
     public String getAuthUrl(String authCode){
