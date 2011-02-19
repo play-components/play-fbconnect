@@ -33,7 +33,7 @@ public class FBConnect extends Controller {
                         "&error=" + WS.encode(params.get("error"));
             redirect(landUrl);
         }
-        if(code != null && !code.isEmpty()){
+        if(code != null){
             String authUrl = fbsession.getAuthUrl(code);
             WSUrlFetch ws = new WSUrlFetch();
             String response = ws.newRequest(authUrl).get().getString();
@@ -56,13 +56,12 @@ public class FBConnect extends Controller {
             if (accessToken != null && expires != null) {
                 try{
                     Class model = Class.forName(fbsession.getModel());
-                    Class[] paramTypes = new Class[1];
-                    paramTypes[0] = JsonObject.class;
-                    Method method = model.getMethod("facebookOAuthCallback", paramTypes);
+                    Method method = model.getMethod("facebookOAuthCallback", new Class[] { JsonObject.class });
                     if(Modifier.isStatic(method.getModifiers())){
-                        String uri = "https://graph.facebook.com/me?access_token="+WS.encode(accessToken);
+                        String uri = "https://graph.facebook.com/me?"+WS.encode(accessToken);
                         JsonObject jsonData = ws.newRequest(uri).get().getJson().getAsJsonObject();
                         jsonData.add("accessToken", new JsonPrimitive(accessToken));
+                        jsonData.add("expires", new JsonPrimitive(expires));
                         method.invoke(null, jsonData);
                     }else{
                         throw new UnexpectedException("Module fbconnect expects your facebookOAuthCallback method to be static");
@@ -74,7 +73,7 @@ public class FBConnect extends Controller {
                 }catch(IllegalAccessException e){
                     throw new UnexpectedException("Module fbconnect does not have access to call your model's findForFacebookOAuth");
                 }catch(InvocationTargetException e){
-                    throw new UnexpectedException("Module fbconnect could not call your model's findForFacebookOAuth: "+e.getMessage());
+                    throw new UnexpectedException("Module fbconnect encountered an error while calling your model's findForFacebookOAuth: "+e.getMessage());
                 }
             } else {
                 throw new UnexpectedException("Module fbconnect could not find access token and expires in facebook callback");

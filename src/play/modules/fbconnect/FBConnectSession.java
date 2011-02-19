@@ -33,15 +33,11 @@ public class FBConnectSession {
     }
     
 	public String getLoginUrl() {
-		return getLoginUrl(null);
+		return getLoginUrl("email");
 	}
 
     public String getLoginUrl(String scope){
-        String req = String.format("https://graph.facebook.com/oauth/authorize?client_id=%s&display=%s&redirect_uri=%s", WS.encode(id), WS.encode("page"), WS.encode(Router.getFullUrl("FBConnect.callback")));
-        if(scope != null){
-            req += "&scope="+scope;
-        }
-        return req;
+        return String.format("https://www.facebook.com/dialog/oauth?client_id=%s&display=%s&redirect_uri=%s&scope=%s", WS.encode(id), WS.encode("page"), WS.encode(Router.getFullUrl("FBConnect.callback")), scope);
     }
     
     public String getAuthUrl(String authCode){
