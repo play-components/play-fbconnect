@@ -42,7 +42,6 @@ public class FBConnectSession {
         if(scope != null){
             req += "&scope="+scope;
         }
-        Logger.info(req);
         return req;
     }
     
