@@ -2,6 +2,7 @@ package play.modules.fbconnect;
 
 import java.net.URLEncoder;
 
+import play.Logger;
 import play.Play;
 import play.exceptions.UnexpectedException;
 import play.libs.WS;
@@ -37,23 +38,16 @@ public class FBConnectSession {
 	}
 
     public String getLoginUrl(String scope){
-        WSRequest req = WS.url("https://graph.facebook.com/oauth/authorize")
-                            .setParameter("client_id", id)
-                            .setParameter("display", "page")
-                            .setParameter("redirect_uri", Router.getFullUrl("FBConnect.callback"));
+        String req = String.format("https://graph.facebook.com/oauth/authorize?client_id=%s&display=%s&redirect_uri=%s", WS.encode(id), WS.encode("page"), WS.encode(Router.getFullUrl("FBConnect.callback")));
         if(scope != null){
-            req.setParameter("scope", scope);
+            req += "&scope="+scope;
         }
-        return req.url;
+        Logger.info(req);
+        return req;
     }
     
     public String getAuthUrl(String authCode){
-        return WS.url("https://graph.facebook.com/oauth/authorize")
-                    .setParameter("client_id", id)
-                    .setParameter("redirect_uri", Router.getFullUrl("FBConnect.callback"))
-                    .setParameter("client_secret", secret)
-                    .setParameter("code", authCode)
-                    .url;
+        return String.format("https://graph.facebook.com/oauth/authorize?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s", WS.encode(id), WS.encode(Router.getFullUrl("FBConnect.callback")), WS.encode(secret), WS.encode(authCode));
     }
     
     public void init(){
