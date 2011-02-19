@@ -2,7 +2,6 @@ package play.modules.fbconnect;
 
 import java.net.URLEncoder;
 
-import play.Logger;
 import play.Play;
 import play.exceptions.UnexpectedException;
 import play.libs.WS;
