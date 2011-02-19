@@ -45,7 +45,7 @@ public class FBConnectSession {
     }
     
     public String getAuthUrl(String authCode){
-        return String.format("https://graph.facebook.com/oauth/authorize?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s", WS.encode(id), WS.encode(Router.getFullUrl("FBConnect.callback")), WS.encode(secret), WS.encode(authCode));
+        return String.format("https://graph.facebook.com/oauth/access_token?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s", WS.encode(id), WS.encode(Router.getFullUrl("FBConnect.callback")), WS.encode(secret), WS.encode(authCode));
     }
     
     public void init(){
