@@ -12,6 +12,7 @@ import play.Play;
 import play.exceptions.UnexpectedException;
 import play.libs.WS;
 import play.libs.WS.HttpResponse;
+import play.libs.ws.WSUrlFetch;
 import play.modules.fbconnect.FBConnectPlugin;
 import play.modules.fbconnect.FBConnectSession;
 import play.mvc.*;
@@ -24,7 +25,8 @@ public class FBConnect extends Controller {
         String code = params.get("code");
         if(code != null && !code.isEmpty()){
             String authUrl = fbsession.getAuthUrl(code);
-            String response = WS.url(authUrl).get().getString();
+            WSUrlFetch ws = new WSUrlFetch();
+            String response = ws.newRequest(authUrl).get().getString();;
             String accessToken = null;
             Integer expires = null;
             String[] pairs = response.split("&");
