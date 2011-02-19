@@ -58,7 +58,7 @@ public class FBConnect extends Controller {
                     Class model = Class.forName(fbsession.getModel());
                     Method method = model.getMethod("facebookOAuthCallback", new Class[] { JsonObject.class });
                     if(Modifier.isStatic(method.getModifiers())){
-                        String uri = "https://graph.facebook.com/me?"+WS.encode(accessToken);
+                        String uri = "https://graph.facebook.com/me?access_token="+WS.encode(accessToken);
                         JsonObject jsonData = ws.newRequest(uri).get().getJson().getAsJsonObject();
                         jsonData.add("accessToken", new JsonPrimitive(accessToken));
                         jsonData.add("expires", new JsonPrimitive(expires));
