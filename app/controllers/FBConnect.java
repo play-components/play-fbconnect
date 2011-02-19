@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import play.Logger;
 import play.Play;
 import play.exceptions.UnexpectedException;
 import play.libs.WS;
@@ -23,6 +24,15 @@ public class FBConnect extends Controller {
         FBConnectPlugin fbplugin = Play.plugin(FBConnectPlugin.class);
         FBConnectSession fbsession = fbplugin.session();
         String code = params.get("code");
+        String error = params.get("error");
+        if(error != null){
+            String landUrl = fbsession.getLandUrl();
+            landUrl += landUrl.contains("?") ? "&" : "?";
+            landUrl += "error_reason=" + WS.encode(params.get("error_reason")) + 
+                        "&error_description=" + WS.encode(params.get("error_description")) +
+                        "&error=" + WS.encode(params.get("error"));
+            redirect(landUrl);
+        }
         if(code != null && !code.isEmpty()){
             String authUrl = fbsession.getAuthUrl(code);
             WSUrlFetch ws = new WSUrlFetch();
@@ -51,7 +61,7 @@ public class FBConnect extends Controller {
                     Method method = model.getMethod("facebookOAuthCallback", paramTypes);
                     if(Modifier.isStatic(method.getModifiers())){
                         String uri = "https://graph.facebook.com/me?access_token="+WS.encode(accessToken);
-                        JsonObject jsonData = WS.url(uri).get().getJson().getAsJsonObject();
+                        JsonObject jsonData = ws.newRequest(uri).get().getJson().getAsJsonObject();
                         jsonData.add("accessToken", new JsonPrimitive(accessToken));
                         method.invoke(null, jsonData);
                     }else{
@@ -72,6 +82,4 @@ public class FBConnect extends Controller {
         }
         redirect(fbsession.getLandUrl());
     }
-    
-
 }
