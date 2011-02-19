@@ -26,7 +26,7 @@ public class FBConnect extends Controller {
         if(code != null && !code.isEmpty()){
             String authUrl = fbsession.getAuthUrl(code);
             WSUrlFetch ws = new WSUrlFetch();
-            String response = ws.newRequest(authUrl).get().getString();;
+            String response = ws.newRequest(authUrl).get().getString();
             String accessToken = null;
             Integer expires = null;
             String[] pairs = response.split("&");
