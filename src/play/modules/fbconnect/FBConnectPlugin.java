@@ -12,14 +12,18 @@ public class FBConnectPlugin extends PlayPlugin {
     private static ThreadLocal<FBConnectSession> _session = new ThreadLocal<FBConnectSession>();
     
     public FBConnectSession session(){
-        return _session.get();
+        FBConnectSession session = _session.get();
+        if(session == null){
+            session = new FBConnectSession();
+            session.init();
+            _session.set(session);
+        }
+        return session;
     }
     
     @Override
     public void onApplicationStart() {
-        FBConnectSession session = new FBConnectSession();
-        session.init();
-        _session.set(session);
+        session();
     }
     
     @Override
