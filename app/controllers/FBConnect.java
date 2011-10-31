@@ -36,7 +36,7 @@ public class FBConnect extends Controller {
         if(code != null){
             String authUrl = fbsession.getAuthUrl(code);
             WSUrlFetch ws = new WSUrlFetch();
-            String response = ws.newRequest(authUrl).get().getString();
+            String response = ws.newRequest(authUrl, "UTF-8").get().getString();
             String accessToken = null;
             Integer expires = null;
             String[] pairs = response.split("&");
@@ -53,15 +53,17 @@ public class FBConnect extends Controller {
                     }
                 }
             }
-            if (accessToken != null && expires != null) {
+            if (accessToken != null) {
                 try{
                     Class model = Class.forName(fbsession.getModel());
                     Method method = model.getMethod("facebookOAuthCallback", new Class[] { JsonObject.class });
                     if(Modifier.isStatic(method.getModifiers())){
                         String uri = "https://graph.facebook.com/me?access_token="+WS.encode(accessToken);
-                        JsonObject jsonData = ws.newRequest(uri).get().getJson().getAsJsonObject();
+                        JsonObject jsonData = ws.newRequest(uri, "UTF-8").get().getJson().getAsJsonObject();
                         jsonData.add("accessToken", new JsonPrimitive(accessToken));
-                        jsonData.add("expires", new JsonPrimitive(expires));
+                        if(expires != null) {
+                        	jsonData.add("expires", new JsonPrimitive(expires));
+                        }
                         method.invoke(null, jsonData);
                     }else{
                         throw new UnexpectedException("Module fbconnect expects your facebookOAuthCallback method to be static");
@@ -76,7 +78,7 @@ public class FBConnect extends Controller {
                     throw new UnexpectedException("Module fbconnect encountered an error while calling your model's findForFacebookOAuth: "+e.getMessage());
                 }
             } else {
-                throw new UnexpectedException("Module fbconnect could not find access token and expires in facebook callback");
+                throw new UnexpectedException("Module fbconnect could not find access token in facebook callback");
             }
         }
         redirect(fbsession.getLandUrl());
